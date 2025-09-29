@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Form } from 'react-router'
 import { authClient } from '../../utils/auth-client'
 
 export default function SignUp() {
@@ -17,13 +18,21 @@ export default function SignUp() {
           // redirect to home
         },
         onError: (ctx) => {
-          console.log(ctx.error)
+          alert(ctx.error.message)
         }
       }
     )
   }
 
   return (
-    <p>hoooo boy</p>
+    <div>
+      <h2>Sign Up</h2>
+      <Form onSubmit={signUp}>
+        <input type='text' value={name} onChange={(e) => setName(e.target.value)} placeholder='name' />
+        <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='email' />
+        <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='password' />
+        <button type='submit' className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 active:bg-blue-800">Sign up!!!!</button>
+      </Form>
+    </div>
   )
 }
