@@ -1,4 +1,4 @@
-import { auth } from '../../utils/auth' // Adjust the path as necessary
+import { auth } from '../../utils/auth'
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router"
 
 export async function loader({ request }: LoaderFunctionArgs) {
