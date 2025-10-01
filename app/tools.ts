@@ -1,0 +1,45 @@
+// tools.ts
+import { tool } from "ai";
+import { z } from 'zod'
+
+// tool to get the current date!
+
+// get all items
+// gotta add auth to this 
+export const listItems = tool({
+  name: "listItems",
+  description: "List all items",
+  inputSchema: z.object({
+
+  }),
+  execute: async ({ }) => {
+    // get all items from db
+  }
+});
+
+// Tool to write a database entry
+export const createItem = tool({
+  name: "createItem",
+  description: "Create new item",
+  inputSchema: z.object({
+    content: z.string().describe('the task content, generally taken verbatim from the user')
+  }),
+  execute: async ({ }) => {
+
+  }
+});
+
+// Tool to delete a database entry
+export const deleteItem = tool({
+  name: "deleteItem",
+  description: "Delete a database entry by ID",
+  inputSchema: z.object({
+
+  }),
+  execute: async ({ city }) => {
+    // get all items from db
+  }
+});
+
+// Export all tools as an array for use in your AI SDK calls
+export const tools = {listItems, createItem, deleteItem}
