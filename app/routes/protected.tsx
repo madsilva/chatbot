@@ -5,6 +5,12 @@ import { useChat } from '@ai-sdk/react';
 import { useState } from 'react';
 import { DefaultChatTransport } from 'ai';
 import { Button } from "@/components/ui/button"
+import {
+  PromptInput,
+  PromptInputAction,
+  PromptInputActions,
+  PromptInputTextarea,
+} from "@/components/ui/prompt-input"
 import { LogOutButton } from '../ui/LogOutButton'
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -35,9 +41,17 @@ export default function Protected({ loaderData }: Route.ComponentProps ) {
 
 export function Chat() {
   const [input, setInput] = useState('')
-  const { messages, sendMessage } = useChat({
+  const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({ api: '/ai' })
   })
+
+  const isLoading = status === 'submitted' ? true : false
+
+  const handleSubmit = () => {
+    //e.preventDefault()
+    sendMessage({ text: input })
+    setInput('')
+  }
 
   return (
     <div className='flex flex-col w-full max-w-md py-24 mx-auto stretch'>
@@ -53,12 +67,16 @@ export function Chat() {
           })}
         </div>
       ))}
-      <form onSubmit={e => {
-        e.preventDefault()
-        sendMessage({ text: input })
-        setInput('')
-      }}
+      <PromptInput
+        value={input}
+        onValueChange={(v) => setInput(v)}
+        isLoading={isLoading}
+        onSubmit={handleSubmit}
+        className="w-full max-w-(--breakpoint-md)"
       >
+        <PromptInputTextarea placeholder="Ask me anything..." />
+      </PromptInput>
+      <form onSubmit={e => { handleSubmit(e)}}>
         <input value={input} onChange={(e) => setInput(e.currentTarget.value)} className='' placeholder='say something....' />
       </form>
     </div>
