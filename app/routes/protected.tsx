@@ -5,6 +5,7 @@ import { useChat } from '@ai-sdk/react';
 import { useState } from 'react';
 import { DefaultChatTransport } from 'ai';
 import { Button } from "@/components/ui/button"
+import { LogOutButton } from '../ui/LogOutButton'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await auth.api.getSession({ headers: request.headers })
@@ -23,6 +24,7 @@ export default function Protected({ loaderData }: Route.ComponentProps ) {
   return (
     <>
     <h2>hi {JSON.stringify(loaderData.user.email)}!</h2>
+    <LogOutButton />
     <div>
       <Chat />
     </div>
