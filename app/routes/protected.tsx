@@ -4,6 +4,7 @@ import type { Route } from "./+types/protected";
 import { useChat } from '@ai-sdk/react';
 import { useState } from 'react';
 import { DefaultChatTransport } from 'ai';
+import { Button } from "@/components/ui/button"
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await auth.api.getSession({ headers: request.headers })
@@ -38,6 +39,7 @@ export function Chat() {
 
   return (
     <div className='flex flex-col w-full max-w-md py-24 mx-auto stretch'>
+      <Button>test!</Button>
       {messages.map(message => (
         <div key={message.id} className='whitespace-pre-wrap'>
           {message.role === 'user' ? 'User ' : 'AI: '}
