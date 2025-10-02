@@ -7,9 +7,10 @@ export const listItems = tool({
   name: "listItems",
   description: "List all items that belong to a given user.",
   inputSchema: z.object({
-    userId: z.string().describe('the ID of the user you want to list items for')
+    //userId: z.string().describe('the ID of the user you want to list items for')
   }),
-  execute: async ({ userId }) => {
+  execute: async (input, { experimental_context }) => {
+    const { userId } = experimental_context
     const result = await listItemsDB({userId})
     return result
   }
