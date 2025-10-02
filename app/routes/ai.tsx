@@ -1,7 +1,7 @@
 import { redirect, type ActionFunctionArgs, type LoaderFunctionArgs } from 'react-router'
 import { openai } from '@ai-sdk/openai';
 import { streamText, type UIMessage, convertToModelMessages, stepCountIs } from 'ai';
-import { listItems, createItem } from '../tools'
+import { listItems, createItem, deleteItems } from '../tools'
 import { systemPrompt } from '../systemprompt'
 import { auth } from '../../utils/auth'
 
@@ -19,7 +19,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const result = streamText({
       model: openai('gpt-4o-mini'),
       messages: convertToModelMessages(messages),
-      tools: { listItems, createItem },
+      tools: { listItems, createItem, deleteItems },
       experimental_context: {
         userId: userId
       },
