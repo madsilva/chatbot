@@ -3,7 +3,8 @@ import { itemsTable, type NewItem } from './item-schema'
 import { eq } from 'drizzle-orm'
 
 export async function listItemsDB({ userId }: { userId: string }) {
-  const result = await db.select({  }).from(itemsTable).where(eq(itemsTable.userId, userId))
+  console.log('user id for list', userId)
+  const result = await db.select().from(itemsTable).where(eq(itemsTable.userId, userId))
   console.log(result)
   return result
 }
