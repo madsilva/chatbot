@@ -1,7 +1,7 @@
 // tools.ts
 import { tool } from "ai";
 import { z } from 'zod'
-import { listItemsDB, createItemDB } from './db/itemactions'
+import { listItemsDB, createItemDB, deleteItemsDB } from './db/itemactions'
 
 export const listItems = tool({
   name: "listItems",
@@ -28,13 +28,14 @@ export const createItem = tool({
   }
 });
 
-export const deleteItem = tool({
-  name: "deleteItem",
-  description: "Delete an item by ID",
+export const deleteItems = tool({
+  name: "deleteItems",
+  description: "Delete a list of items given by IDs",
   inputSchema: z.object({
-    itemId: z.string().describe('the id of the item you want to delete')
+    itemIds: z.array(z.string()).describe('the ids of the items you want to delete')
   }),
-  execute: async ({ itemId }) => {
-    // make db call here
+  execute: async ({ itemIds }, { experimental_context }) => {
+    const result = await deleteItemsDB({itemIds})
+    return result
   }
 });
