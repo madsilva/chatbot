@@ -1,6 +1,6 @@
 {
-  "id": "7e769939-dfb1-41df-8663-799e59402124",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "e2fca16f-1c2a-4e8f-adb0-8a10ab385916",
+  "prevId": "7e769939-dfb1-41df-8663-799e59402124",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -314,6 +314,12 @@
           "type": "serial",
           "primaryKey": true,
           "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         },
         "time_created": {
           "name": "time_created",

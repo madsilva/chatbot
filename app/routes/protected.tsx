@@ -56,15 +56,35 @@ export function Chat() {
   return (
     <div className='flex flex-col w-full max-w-md py-24 mx-auto stretch'>
       <Button>test!</Button>
+      
       {messages.map(message => (
         <div key={message.id} className='whitespace-pre-wrap'>
           {message.role === 'user' ? 'User ' : 'AI: '}
-          {message.parts.map((part, i) => {
+          {message.role === "assistant" ? (
+            message.parts?.map((part, i) => {
+              if (part.type === "text") {
+                return (
+                    <div key={`${message.id}-${i}`}>
+                      {part.text}
+                    </div>
+                  );
+              } else if (part.type.startsWith('tool-')) {
+                return (
+                    <div key={`${message.id}-${i}`} className="text-xs font-mono p-2 bg-gray-100 rounded">
+                      <pre>Input: {JSON.stringify(part.input, null, 2)}</pre>
+                      <pre>Output: {JSON.stringify(part.output, null, 2)}</pre>
+                    </div>
+                  );
+              }
+            })
+          ) : (
+            message.parts.map((part, i) => {
             switch(part.type) {
               case 'text':
                 return <div key={`${message.id}-${i}`}>{part.text}</div>
             }
-          })}
+          })
+          )}
         </div>
       ))}
       <PromptInput
