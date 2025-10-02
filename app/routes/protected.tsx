@@ -62,24 +62,19 @@ export function Chat() {
           {message.role === 'user' ? 'User ' : 'AI: '}
           {message.role === "assistant" ? (
             message.parts?.map((part, i) => {
-              switch (part.type) {
-                case "text":
-                  return (
+              if (part.type === "text") {
+                return (
                     <div key={`${message.id}-${i}`}>
                       {part.text}
                     </div>
                   );
-                case "tool-listItems":  // Tool parts are named "tool-TOOLNAME"
-                  // For now, show raw JSON to see what we're working with
-                  return (
+              } else if (part.type.startsWith('tool-')) {
+                return (
                     <div key={`${message.id}-${i}`} className="text-xs font-mono p-2 bg-gray-100 rounded">
-                      Weather Tool Called:
                       <pre>Input: {JSON.stringify(part.input, null, 2)}</pre>
                       <pre>Output: {JSON.stringify(part.output, null, 2)}</pre>
                     </div>
                   );
-                default:
-                  return null;
               }
             })
           ) : (
@@ -90,7 +85,6 @@ export function Chat() {
             }
           })
           )}
-          
         </div>
       ))}
       <PromptInput
