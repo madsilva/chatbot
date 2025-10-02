@@ -2,7 +2,7 @@
 import { tool } from "ai";
 import { z } from 'zod'
 
-import { listItemsDB } from './db/itemactions'
+import { listItemsDB, createItemDB } from './db/itemactions'
 
 // tool to get the current date!
 
@@ -16,7 +16,8 @@ export const listItems = tool({
   }),
   execute: async ({ userId }) => {
     console.log("toooooool callllll")
-    //const result = await listItemsDB(userId)
+    const result = await listItemsDB({userId})
+    return result
   }
 });
 
@@ -25,10 +26,14 @@ export const createItem = tool({
   name: "createItem",
   description: "Create new item",
   inputSchema: z.object({
-    content: z.string().describe('the task content, generally taken verbatim from the user')
+    userId: z.string().describe('the ID of the user you want to create the item for'),
+    content: z.string().describe('the task content, generally taken verbatim from the user'),
+    timeInfo: z.string().describe('any time related information about the task, such as tomorrow, tonight, next week, etc')
   }),
-  execute: async ({ }) => {
-
+  execute: async ({ userId, content, timeInfo }) => {
+    console.log('createitem called!!')
+    const result = await createItemDB({userId, content, timeInfo})
+    console.log('result from createitem', result)
   }
 });
 
