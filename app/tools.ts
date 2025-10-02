@@ -2,18 +2,21 @@
 import { tool } from "ai";
 import { z } from 'zod'
 
+import { listItemsDB } from './db/itemactions'
+
 // tool to get the current date!
 
 // get all items
 // gotta add auth to this 
 export const listItems = tool({
   name: "listItems",
-  description: "List all items",
+  description: "List all items that belong to a given user.",
   inputSchema: z.object({
-
+    userId: z.string().describe('the ID of the user you want to list items for')
   }),
-  execute: async ({ }) => {
-    // get all items from db
+  execute: async ({ userId }) => {
+    console.log("toooooool callllll")
+    //const result = await listItemsDB(userId)
   }
 });
 

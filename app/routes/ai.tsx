@@ -1,6 +1,7 @@
 import { redirect, type ActionFunctionArgs, type LoaderFunctionArgs } from 'react-router'
 import { openai } from '@ai-sdk/openai';
 import { streamText, type UIMessage, convertToModelMessages } from 'ai';
+import { listItems } from '../tools'
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -10,7 +11,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const result = streamText({
     model: openai('gpt-4o-mini'),
-    messages: convertToModelMessages(messages)
+    messages: convertToModelMessages(messages),
+    tools: { listItems }
   })
 
   return result.toUIMessageStreamResponse()
