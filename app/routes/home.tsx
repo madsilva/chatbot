@@ -4,7 +4,6 @@ import { redirect, type LoaderFunctionArgs } from 'react-router'
 import { auth } from '../../utils/auth'
 import LandingPage from "~/ui/LandingPage"
 
-
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
