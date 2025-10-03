@@ -62,7 +62,7 @@ export function ChatDisplay() {
   }
 
   return (
-    <div className='flex flex-col h-[700px] overflow-hidden w-full max-w-lg py-4 mx-auto stretch'>
+    <div className='glass flex flex-col h-[700px] overflow-hidden w-full max-w-lg py-4 mx-auto stretch'>
       <ChatContainerRoot className='flex-1'>
       <ChatContainerContent className="space-y-4 p-4">
       {messages.map((message) => {
@@ -76,7 +76,7 @@ export function ChatDisplay() {
           >
             <div className="max-w-[85%] flex-1 sm:max-w-[75%]">
               {isAssistant ? (
-                <div className="agent-chat-message bg-secondary text-foreground prose rounded-lg p-2">
+                <div className="glass bg-secondary text-foreground prose rounded-lg p-2">
                  
                     {message.parts?.map((part, i) => {
               if (part.type === "text") {
@@ -97,7 +97,7 @@ export function ChatDisplay() {
                   );
                 } else {
                   return (
-                    <MessageContent>tool call....</MessageContent>
+                    <MessageContent className='glass'>tool call....</MessageContent>
                   )
                 }
               }
@@ -109,7 +109,7 @@ export function ChatDisplay() {
                 <div>
                   {message.parts.map((part, i) => {
                     return (
-                      <MessageContent className="user-chat-message bg-primary text-primary-foreground">
+                      <MessageContent className="glass bg-primary ">
                     <div key={`${message.id}-${i}`}>{part.text}</div>
                     </MessageContent>
                     )
@@ -120,36 +120,6 @@ export function ChatDisplay() {
             </div>
           </Message>
         )
-        /*
-        <div key={message.id} className='whitespace-pre-wrap'>
-          {message.role === 'user' ? 'User ' : 'AI: '}
-          {message.role === "assistant" ? (
-            message.parts?.map((part, i) => {
-              if (part.type === "text") {
-                return (
-                    <div key={`${message.id}-${i}`}>
-                      {part.text}
-                    </div>
-                  );
-              } else if (part.type.startsWith('tool-')) {
-                return (
-                    <div key={`${message.id}-${i}`} className="text-xs font-mono p-2 bg-gray-100 rounded">
-                      <pre>Input: {JSON.stringify(part.input, null, 2)}</pre>
-                      <pre>Output: {JSON.stringify(part.output, null, 2)}</pre>
-                    </div>
-                  );
-              }
-            })
-          ) : (
-            message.parts.map((part, i) => {
-            switch(part.type) {
-              case 'text':
-                return <div key={`${message.id}-${i}`}>{part.text}</div>
-            }
-          })
-          )}
-        </div>
-        */
       })}
       </ChatContainerContent>
       </ChatContainerRoot>
@@ -158,7 +128,7 @@ export function ChatDisplay() {
         onValueChange={(v) => setInput(v)}
         isLoading={isLoading}
         onSubmit={handleSubmit}
-        className="w-full max-w-(--breakpoint-md)"
+        className="glass w-full max-w-(--breakpoint-md)"
       >
         <PromptInputTextarea placeholder="make your request..." />
       </PromptInput>

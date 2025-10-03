@@ -3,6 +3,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.glass {
+  background: rgba(255, 255, 255, 0.2); /* translucent white */
+  backdrop-filter: blur(16px);           /* blur background behind */
+  -webkit-backdrop-filter: blur(16px);   /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  filter: contrast(125%);
+}
+
 .soft-rainbow-gradient {
   background-image: linear-gradient(
     45deg,
