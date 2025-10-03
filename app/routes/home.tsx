@@ -1,9 +1,9 @@
 import type { Route } from "./+types/home";
 import { authClient } from '../../utils/auth-client'
-import SignIn from '../ui/signin'
 import { redirect, type LoaderFunctionArgs } from 'react-router'
 import { auth } from '../../utils/auth'
-import SignUp from '../ui/signup'
+import LandingPage from "~/ui/LandingPage"
+
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -30,9 +30,8 @@ export default function Home() {
       </div>
     )
   } else {
-    return <div>
-      <SignIn />
-      <SignUp />
-    </div>
+    return (
+      <LandingPage />
+    )
   }
 }
