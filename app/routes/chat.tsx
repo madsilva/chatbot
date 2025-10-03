@@ -26,20 +26,20 @@ export async function action({ request }: ActionFunctionArgs) {
   return auth.handler(request)
 }
 
-export default function Protected({ loaderData }: Route.ComponentProps ) {
+export default function Chat({ loaderData }: Route.ComponentProps ) {
   return (
     <>
     <h2>hi {JSON.stringify(loaderData.user.email)}!</h2>
     <LogOutButton />
     <div>
-      <Chat />
+      <ChatDisplay />
     </div>
     </>
 
   )
 }
 
-export function Chat() {
+export function ChatDisplay() {
   const [input, setInput] = useState('')
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({ api: '/ai' })
