@@ -5,12 +5,22 @@ import { useChat } from '@ai-sdk/react';
 import { useState } from 'react';
 import { DefaultChatTransport } from 'ai';
 import { Button } from "@/components/ui/button"
+import { Markdown } from "@/components/ui/markdown"
 import {
   PromptInput,
   PromptInputAction,
   PromptInputActions,
   PromptInputTextarea,
 } from "@/components/ui/prompt-input"
+import {
+  Message,
+  MessageAvatar,
+  MessageContent,
+} from "@/components/ui/message"
+import {
+  ChatContainerContent,
+  ChatContainerRoot,
+} from "@/components/ui/chat-container"
 import { LogOutButton } from '../ui/LogOutButton'
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -28,14 +38,12 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Chat({ loaderData }: Route.ComponentProps ) {
   return (
-    <>
-    <h2>hi {JSON.stringify(loaderData.user.email)}!</h2>
-    <LogOutButton />
-    <div>
-      <ChatDisplay />
+    <div className='soft-rainbow-gradient'>
+      <LogOutButton />
+      <div>
+        <ChatDisplay />
+      </div>
     </div>
-    </>
-
   )
 }
 
@@ -46,18 +54,73 @@ export function ChatDisplay() {
   })
 
   const isLoading = status === 'submitted' ? true : false
-
+  const showToolOutput = false
+  
   const handleSubmit = () => {
-    //e.preventDefault()
     sendMessage({ text: input })
     setInput('')
   }
 
   return (
-    <div className='flex flex-col w-full max-w-md py-24 mx-auto stretch'>
-      <Button>test!</Button>
-      
-      {messages.map(message => (
+    <div className='flex flex-col h-[700px] overflow-hidden w-full max-w-lg py-4 mx-auto stretch'>
+      <ChatContainerRoot className='flex-1'>
+      <ChatContainerContent className="space-y-4 p-4">
+      {messages.map((message) => {
+        const isAssistant = (message.role === 'assistant')
+
+        return (
+          <Message
+            key={message.id}
+            className={
+              (message.role === "user" ? "justify-end" : "justify-start")}
+          >
+            <div className="max-w-[85%] flex-1 sm:max-w-[75%]">
+              {isAssistant ? (
+                <div className="agent-chat-message bg-secondary text-foreground prose rounded-lg p-2">
+                 
+                    {message.parts?.map((part, i) => {
+              if (part.type === "text") {
+                return (
+                    <div key={`${message.id}-${i}`}>
+                       <Markdown>
+                      {part.text}
+                      </Markdown>
+                    </div>
+                  );
+              } else if (part.type.startsWith('tool-')) {
+                if (showToolOutput) {
+                    return (
+                    <div key={`${message.id}-${i}`} className="text-xs font-mono p-2 bg-gray-100 rounded">
+                      <pre>Input: {JSON.stringify(part.input, null, 2)}</pre>
+                      <pre>Output: {JSON.stringify(part.output, null, 2)}</pre>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <MessageContent>tool call....</MessageContent>
+                  )
+                }
+              }
+            })}
+
+                  
+                </div>
+              ) : (
+                <div>
+                  {message.parts.map((part, i) => {
+                    return (
+                      <MessageContent className="user-chat-message bg-primary text-primary-foreground">
+                    <div key={`${message.id}-${i}`}>{part.text}</div>
+                    </MessageContent>
+                    )
+                  })}
+                
+                </div>
+              )}
+            </div>
+          </Message>
+        )
+        /*
         <div key={message.id} className='whitespace-pre-wrap'>
           {message.role === 'user' ? 'User ' : 'AI: '}
           {message.role === "assistant" ? (
@@ -86,7 +149,10 @@ export function ChatDisplay() {
           })
           )}
         </div>
-      ))}
+        */
+      })}
+      </ChatContainerContent>
+      </ChatContainerRoot>
       <PromptInput
         value={input}
         onValueChange={(v) => setInput(v)}
@@ -94,11 +160,8 @@ export function ChatDisplay() {
         onSubmit={handleSubmit}
         className="w-full max-w-(--breakpoint-md)"
       >
-        <PromptInputTextarea placeholder="Ask me anything..." />
+        <PromptInputTextarea placeholder="make your request..." />
       </PromptInput>
-      <form onSubmit={e => { handleSubmit(e)}}>
-        <input value={input} onChange={(e) => setInput(e.currentTarget.value)} className='' placeholder='say something....' />
-      </form>
     </div>
   )
 }
